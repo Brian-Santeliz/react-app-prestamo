@@ -1,25 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Fragment, useState } from "react";
+import "./App.css";
+import Header from "./components/Header";
+import Formulario from "./components/Formulario";
+import Mensaje from "./components/Mensaje";
+import Resultado from "./components/Resultado";
+import Spinner from "./components/Spinner";
 
 function App() {
+  //State del valor
+  const [valor, setValor] = useState(0);
+  const [plazo, setPlazo] = useState("");
+  const [total, setTotal] = useState(0);
+  const [spinner, setSpinner] = useState(false);
+
+  let mensaje;
+  //compurbe el state del spiner si el total calculado es cero muestra un mensaje u otro
+  if (spinner) {
+    mensaje = <Spinner />;
+  } else if (total === 0) {
+    mensaje = <Mensaje />;
+  } else {
+    mensaje = <Resultado valor={valor} total={total} plazo={plazo} />;
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Fragment>
+      <Header titulo="Calcula tu prestamo" />
+
+      <div className="container">
+        <Formulario
+          valor={valor}
+          setValor={setValor}
+          plazo={plazo}
+          setPlazo={setPlazo}
+          setTotal={setTotal}
+          setSpinner={setSpinner}
+        />
+        <div className="mensajes">{mensaje}</div>
+      </div>
+    </Fragment>
   );
 }
 
